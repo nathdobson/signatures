@@ -15,7 +15,8 @@ edition = "2021"
 rust-version = "1.61"
 
 [dependencies]
-hmac = { version = "0.12", default-features = false, features = ["reset"] }
+#hmac = { version = "0.12", default-features = false, features = ["reset"] }
+hmac = { path="../../MACs/hmac", default-features = false, features = ["reset"] }
 subtle = { version = "2", default-features = false }
 
 [dev-dependencies]
