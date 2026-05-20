@@ -23,7 +23,8 @@ signature = { path="../../traits-signature/signature", default-features = false,
 
 # optional dependencies
 der = { version = "0.7", optional = true }
-digest = { version = "0.10.7", optional = true, default-features = false, features = ["oid"] }
+#digest = { version = "0.10.7", optional = true, default-features = false, features = ["oid"] }
+digest = { path="../../traits-digest/digest", optional = true, default-features = false, features = ["oid"] }
 rfc6979 = { version = "0.4", optional = true, path = "../rfc6979" }
 serdect = { version = "0.2", optional = true, default-features = false, features = ["alloc"] }
 sha2 = { version = "0.10", optional = true, default-features = false, features = ["oid"] }
