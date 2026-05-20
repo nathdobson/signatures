@@ -124,7 +124,7 @@ where
         writer
             .finish()?
             .try_into()
-            .map_err(|_| der::Tag::Sequence.value_error())
+            .map_err(|_| Tag::Sequence.value_error())
     }
 
     /// Borrow this signature as a byte slice
@@ -358,7 +358,7 @@ where
 fn decode_der(der_bytes: &[u8]) -> der::Result<(UintRef<'_>, UintRef<'_>)> {
     let mut reader = der::SliceReader::new(der_bytes)?;
     let header = der::Header::decode(&mut reader)?;
-    header.tag.assert_eq(der::Tag::Sequence)?;
+    header.tag.assert_eq(Tag::Sequence)?;
 
     let ret = reader.read_nested(header.length, |reader| {
         let r = UintRef::decode(reader)?;
