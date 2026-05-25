@@ -92,7 +92,6 @@ use elliptic_curve::{
 
 #[cfg(feature = "alloc")]
 use alloc::vec::Vec;
-
 #[cfg(feature = "arithmetic")]
 use {
     core::str,
@@ -117,6 +116,9 @@ use serdect::serde::{de, ser, Deserialize, Serialize};
 use elliptic_curve::pkcs8::spki::{
     self, AlgorithmIdentifierOwned, DynAssociatedAlgorithmIdentifier,
 };
+#[cfg(feature = "alloc")]
+use fallible_vec::TryClone;
+use fallible_vec::{TryClone, TryCloneError};
 
 /// OID for ECDSA with SHA-224 digests.
 ///
@@ -352,6 +354,18 @@ where
     SignatureSize<C>: ArrayLength<u8>,
 {
     type Repr = SignatureBytes<C>;
+}
+
+impl<C> TryClone for Signature<C>
+where
+    C: PrimeCurve,
+{
+    fn try_clone(&self) -> core::result::Result<Self, TryCloneError> {
+        Ok(Signature {
+            r: self.r.clone(),
+            s: self.s.clone(),
+        })
+    }
 }
 
 impl<C> TryFrom<&[u8]> for Signature<C>
@@ -662,6 +676,18 @@ where
     SignatureSize<C>: ArrayLength<u8>,
 {
     type Repr = SignatureBytes<C>;
+}
+
+impl<C> TryClone for SignatureWithOid<C>
+where
+    C: PrimeCurve,
+{
+    fn try_clone(&self) -> core::result::Result<Self, TryCloneError> {
+        Ok(SignatureWithOid {
+            signature: self.signature.try_clone()?,
+            oid: self.oid.clone(),
+        })
+    }
 }
 
 /// NOTE: this implementation assumes the default digest for the given elliptic
